@@ -1,6 +1,6 @@
 package com.mum.cs544.SchedulingProject.repository;
 
-import edu.mum.cs5.airTicketbooking.model.Airplane;
+import com.mum.cs544.SchedulingProject.model.Airplane;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

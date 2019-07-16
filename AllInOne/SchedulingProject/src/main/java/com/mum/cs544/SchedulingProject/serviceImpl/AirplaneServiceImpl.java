@@ -1,8 +1,8 @@
 package com.mum.cs544.SchedulingProject.serviceImpl;
 
-import edu.mum.cs5.airTicketbooking.model.Airplane;
-import edu.mum.cs5.airTicketbooking.repository.AirplaneRepository;
-import edu.mum.cs5.airTicketbooking.service.AirplaneService;
+import com.mum.cs544.SchedulingProject.model.Airplane;
+import com.mum.cs544.SchedulingProject.repository.AirplaneRepository;
+import com.mum.cs544.SchedulingProject.service.AirplaneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,6 @@ public class AirplaneServiceImpl implements AirplaneService {
 		// TODO Auto-generated method stub
 		return airplaneRepository.findAll();
 	}
-
-
 
 
 //	@Override

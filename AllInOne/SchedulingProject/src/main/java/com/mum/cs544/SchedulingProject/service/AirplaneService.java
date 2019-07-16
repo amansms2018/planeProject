@@ -1,7 +1,6 @@
 package com.mum.cs544.SchedulingProject.service;
 
-
-import edu.mum.cs5.airTicketbooking.model.Airplane;
+import com.mum.cs544.SchedulingProject.model.Airplane;
 
 import java.util.List;
 

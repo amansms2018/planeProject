@@ -1,22 +1,15 @@
 package com.mum.cs544.SchedulingProject.controller;
-
-import edu.mum.cs5.airTicketbooking.model.Airplane;
-import edu.mum.cs5.airTicketbooking.model.Airport;
-import edu.mum.cs5.airTicketbooking.model.Schuedule;
-import edu.mum.cs5.airTicketbooking.repository.AirportRepository;
-import edu.mum.cs5.airTicketbooking.service.AirplaneService;
-import edu.mum.cs5.airTicketbooking.service.SchueduleService;
+import com.mum.cs544.SchedulingProject.model.Schuedule;
+import com.mum.cs544.SchedulingProject.repository.AirportRepository;
+import com.mum.cs544.SchedulingProject.service.AirplaneService;
+import com.mum.cs544.SchedulingProject.service.SchueduleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 public class SchueduleController {
 
     @Autowired
@@ -27,32 +20,13 @@ public class SchueduleController {
 
     @Autowired
     AirplaneService airplaneService;
-    ////
 
-    @GetMapping(value = "/newSchuedule")
-    public String newProductForm(Model model) {
-        model.addAttribute("schuedule", new Schuedule());
-        List<Airport> airports = airportRepository.findAll();
-        model.addAttribute("airports", airports);
-        List<Airplane> airplanes = airplaneService.findAllAirplane();
-        model.addAttribute("airplanes", airplanes);
-        return "admin/newSchedule2";
-    }
-
-    @PostMapping(value = "/saveSchuedule")
-    public String addNewProduct(@Valid @ModelAttribute("schuedule") Schuedule schuedule,
-                                BindingResult bindingResult, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("errors", bindingResult.getAllErrors());
-//            List<Airport> airports = airportRepository.findAll();
-//            model.addAttribute("airports", airports);
-//            return "admin/addSchuedulingPage";
-//        }
+    @PostMapping("/saveSchuedule")
+    public void  addNewFlightSchedule(@RequestBody Schuedule schuedule) {
       schueduleService.SaveSchuedule(schuedule);
-        return "redirect:/admin/schueduleList";
     }
 
-//    /////
+////    /////
 //    @GetMapping(value="/newSchuedule")
 //    public String recordingSchuedule(ModelMap model) {
 //        Schuedule schuedule = new Schuedule();
@@ -78,38 +52,40 @@ public class SchueduleController {
 //        return "redirect:/admin/schueduleList";
 //    }
     @GetMapping(value = "/admin/schueduleList")
-    public ModelAndView getAll() {
-        List<Schuedule> schuedules = schueduleService.searchAllSchuedule();
-        return new ModelAndView("admin/schueduleList", "schuedules", schuedules);
+    public List<Schuedule> getAll() {
+        return schueduleService.searchAllSchuedule();
     }
 //
 
+    @GetMapping(value="/findSchedule/{id}")
+    public Schuedule searchFilightSchedule (@PathVariable Long id) {
+        return schueduleService.searchById(id);
+    }
+
     @GetMapping(value="/editschuedule/{id}")
-    public String edit (@PathVariable Long id,Model model) {
-        Schuedule schuedule=schueduleService.searchById(id);
-        model.addAttribute("schuedule",schuedule);
-        return "admin/editSchuedule";
+    public Schuedule editFilightSchedule (@PathVariable("id") Long id) {
+        return schueduleService.searchById(id);
     }
 
-    @PostMapping(value = "/editsave")
-    public String editsave(@ModelAttribute("schuedule") Schuedule p) {
-        Schuedule schuedule = schueduleService.searchById(p.getId());
-        schuedule.setDepartureAirport(p.getDepartureAirport());
-        schuedule.setDepartureDate(p.getDepartureDate());
-//        schuedule.setDepartureTime(p.getDepartureTime());
-        schuedule.setArriavaleAirport(p.getArriavaleAirport());
-//        schuedule.setArrivaleTime(p.getArrivaleTime());
-        schuedule.setArrivaleaDate(p.getArrivaleaDate());
-        schuedule.setPrice(p.getPrice());
+//    @PostMapping(value = "/editsave")
+//    public String editsave(@ModelAttribute("schuedule") Schuedule p) {
+//        Schuedule schuedule = schueduleService.searchById(p.getId());
+//        schuedule.setDepartureAirport(p.getDepartureAirport());
+//        schuedule.setDepartureDate(p.getDepartureDate());
+////        schuedule.setDepartureTime(p.getDepartureTime());
+//        schuedule.setArriavaleAirport(p.getArriavaleAirport());
+////        schuedule.setArrivaleTime(p.getArrivaleTime());
+//        schuedule.setArrivaleaDate(p.getArrivaleaDate());
+//        schuedule.setPrice(p.getPrice());
+//
+//        schueduleService.SaveSchuedule(schuedule);
+//        return "redirect:/schuedule/list";
+//    }
 
-        schueduleService.SaveSchuedule(schuedule);
-        return "redirect:/schuedule/list";
-    }
-
-    @RequestMapping(value="/deleteschuedule/{id}",method=RequestMethod.GET)
-    public String delete(@PathVariable Long id) {
+    @DeleteMapping(value="/deleteschuedule/{id}")
+    public void delete(@PathVariable Long id) {
         schueduleService.deleteSchueduleById(id);
-        return "redirect:/admin/schueduleList";
+//        return "redirect:/admin/schueduleList";
     }
 
 //    @GetMapping(value = "/searchForm")
